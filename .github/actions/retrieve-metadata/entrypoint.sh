@@ -7,7 +7,21 @@ if [ -z "$INPUT_APPLICATION_ID" ]; then
 fi
 
 # Make the API request (replace the URL with your actual endpoint)
-RESPONSE=$(curl -s -H "Authorization: Bearer $INPUT_APPLICATION_ID" "https://api.example.com/application/metadata")
+# RESPONSE=$(curl -s -H "Authorization: Bearer $INPUT_APPLICATION_ID" "https://api.example.com/application/metadata")
+
+RESPONSE='{
+  "project_key": "my-project-key",
+  "repositories": [
+    {
+      "type": "local",
+      "repo_key": "my-local-repo"
+    },
+    {
+      "type": "remote",
+      "repo_key": "my-remote-repo"
+    }
+  ]
+}'
 
 # Parse the metadata (requires jq)
 PROJECT_KEY=$(echo "$RESPONSE" | jq -r '.project_key')
