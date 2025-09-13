@@ -1,0 +1,14 @@
+name: "Retrieve Application Metadata"
+description: "Retrieves application metadata from an API and outputs JFrog Artifactory attributes."
+author: "Your Name <your.email@example.com>"
+inputs:
+  application_id:
+    description: "The Application ID for API authentication."
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Run metadata retrieval script
+      shell: bash
+      run: |
+        ./.github/actions/retrieve-metadata/entrypoint.sh
