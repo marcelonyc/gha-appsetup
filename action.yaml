@@ -11,4 +11,4 @@ runs:
     - name: Run metadata retrieval script
       shell: bash
       run: |
-        ./entry.sh
+        entry.sh
