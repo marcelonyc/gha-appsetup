@@ -37,3 +37,4 @@ echo "$REPOSITORIES" | jq -c '.[]' | while read repo; do
   echo "Repository_Type=$TYPE" >> "$GITHUB_OUTPUT" 
   echo "Repo_Key=$REPO_KEY" >> "$GITHUB_OUTPUT"
 done
+echo "repo_list=${RESPONSE}" >> "$GITHUB_OUTPUT"
