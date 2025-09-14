@@ -1,7 +1,7 @@
 set -e
 
 if [ -z "$application_id" ]; then
-  echo "Error: application_id input is required." >&2
+  echo "Error: application_id input is required, sometimes." >&2
   exit 1
 fi
 
