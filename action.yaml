@@ -8,7 +8,5 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Run metadata retrieval script
+    - run: ${{ github.action_path }}/entry.sh
       shell: bash
-      run: |
-        entry.sh
