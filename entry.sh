@@ -27,12 +27,13 @@ RESPONSE='{
 PROJECT_KEY=$(echo "$RESPONSE" | jq -r '.project_key')
 REPOSITORIES=$(echo "$RESPONSE" | jq -c '.repositories')
 
-echo "Project Key: $PROJECT_KEY"
-echo "Repositories: $REPOSITORIES"
+# echo "Project Key: $PROJECT_KEY"
+# echo "Repositories: $REPOSITORIES"
 
 echo "$REPOSITORIES" | jq -c '.[]' | while read repo; do
   TYPE=$(echo "$repo" | jq -r '.type')
   REPO_KEY=$(echo "$repo" | jq -r '.repo_key')
+  echo "$TYPE - $REPO_KEY"
   echo "Repository_Type=$TYPE" >> "$GITHUB_OUTPUT" 
   echo "Repo_Key=$REPO_KEY" >> "$GITHUB_OUTPUT"
 done
