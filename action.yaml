@@ -5,10 +5,16 @@ inputs:
   application_id:
     description: "The Application ID for API authentication."
     required: true
+outputs:
+  repo_list:
+    description: "A List"
+    value: ${{ steps.get_app.outpus.repo_list }}
 runs:
   using: "composite"
   steps:
-    - run: |
+    - name: Mine
+      id: get_app
+      run: |
        chmod 750 ${{ github.action_path }}/entry.sh
        bash -c ${{ github.action_path }}/entry.sh
       shell: bash
