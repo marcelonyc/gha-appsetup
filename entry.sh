@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 set -e
 
 if [ -z "$INPUT_APPLICATION_ID" ]; then
