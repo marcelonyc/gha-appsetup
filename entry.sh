@@ -1,4 +1,5 @@
 set -e
+echo "App ID: ${application_id}"
 
 if [ -z "$application_id" ]; then
   echo "Error: application_id input is required, sometimes." >&2
