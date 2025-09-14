@@ -8,5 +8,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: bash -c ${{ github.action_path }}/entry.sh
+    - run: |
+    chmod 750 ${{ github.action_path }}/entry.sh
+    bash -c ${{ github.action_path }}/entry.sh
       shell: bash
