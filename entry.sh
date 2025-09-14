@@ -22,9 +22,14 @@ RESPONSE='{
     }
   ]
 }'
-
+RESPONSE='{"repositories": 
+    {
+      "docker": "my-local-repo",
+      "npm": "my-remote-repo"
+    }
+}'
 # Parse the metadata (requires jq)
-PROJECT_KEY=$(echo "$RESPONSE" | jq -r '.project_key')
+# PROJECT_KEY=$(echo "$RESPONSE" | jq -r '.project_key')
 REPOSITORIES=$(echo "$RESPONSE" | jq -c '.repositories')
 
 # echo "Project Key: $PROJECT_KEY"
