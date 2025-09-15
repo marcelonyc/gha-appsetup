@@ -9,6 +9,12 @@ outputs:
   repo_list:
     description: "A List"
     value: ${{ steps.get_app.outputs.repo_list }}
+  docker-repo:
+    description: "Pussh to repo"
+    value: ${{ steps.get_app.outputs.docker }
+  python-remote-repo:
+    description: "Pypi Proxy"
+    value: ${{ steps.get_app.outputs.python-remote }}
 runs:
   using: "composite"
   steps:
