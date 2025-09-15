@@ -11,7 +11,7 @@ outputs:
     value: ${{ steps.get_app.outputs.repo_list }}
   docker-repo:
     description: "Pussh to repo"
-    value: ${{ steps.get_app.outputs.docker }
+    value: ${{ steps.get_app.outputs.docker-repo }}
   python-remote-repo:
     description: "Pypi Proxy"
     value: ${{ steps.get_app.outputs.python-remote }}
