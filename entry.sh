@@ -35,10 +35,12 @@ REPOSITORIES=$(echo "$RESPONSE" | jq -c '.repositories')
 # echo "Project Key: $PROJECT_KEY"
 echo "Repositories: $REPOSITORIES"
 
-echo "$REPOSITORIES" | jq -c '.[]' | while read repo; do
-  TYPE=$(echo "$repo" | jq -r '.key')
-  REPO_KEY=$(echo "$repo" | jq -r '.value')
-  echo "Repository_Type=$TYPE" >> "$GITHUB_OUTPUT" 
-  echo "Repo_Key=$REPO_KEY" >> "$GITHUB_OUTPUT"
-done
+# echo "$REPOSITORIES" | jq -c '.[]' | while read repo; do
+#   TYPE=$(echo "$repo" | jq -r '.key')
+#   REPO_KEY=$(echo "$repo" | jq -r '.value')
+#   echo "Repository_Type=$TYPE" >> "$GITHUB_OUTPUT" 
+#   echo "Repo_Key=$REPO_KEY" >> "$GITHUB_OUTPUT"
+# done
 echo "repo_list=${REPOSITORIES}" >> "$GITHUB_OUTPUT"
+echo "docker=docker-dev" >> "$GITHUB_OUTPUT"
+echo "npm=npm-dev" >> "$GITHUB_OUTPUT"
