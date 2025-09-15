@@ -42,5 +42,5 @@ echo "Repositories: $REPOSITORIES"
 #   echo "Repo_Key=$REPO_KEY" >> "$GITHUB_OUTPUT"
 # done
 echo "repo_list=${REPOSITORIES}" >> "$GITHUB_OUTPUT"
-echo "docker=docker-dev" >> "$GITHUB_OUTPUT"
+echo "docker-repo=docker-dev" >> "$GITHUB_OUTPUT"
 echo "npm=npm-dev" >> "$GITHUB_OUTPUT"
