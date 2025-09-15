@@ -8,7 +8,7 @@ inputs:
 outputs:
   repo_list:
     description: "A List"
-    value: toJson(${{ steps.get_app.outputs.repo_list }})
+    value: ${{ toJson(steps.get_app.outputs.repo_list) }}
 runs:
   using: "composite"
   steps:
