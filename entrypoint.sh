@@ -31,18 +31,18 @@ echo "$RESPONSE" | jq -c --arg app_key "$APPLICATION_KEY" '.[] | select(.applica
   repository_type=$(echo "$record" | jq -r '.repository_type')
   repository_lifestage=$(echo "$record" | jq -r '.repository_lifestage')
   repository_key=$(echo "$record" | jq -r '.repository_key')
-  # {
-  #   echo 'stdout<<EOF'
-  #   echo ${repository_type}-${repository_lifestage}=${repository_key} | tee -a "${GITHUB_OUTPUT}"   
-  #   echo 'EOF'
-  # } >>"${GITHUB_OUTPUT}"
-  REPO_LIST="${REPO_LIST}${repository_type}-${repository_lifestage}=${repository_key}\n"
+  {
+    echo 'stdout<<EOF'
+    echo ${repository_type}-${repository_lifestage}=${repository_key} | tee -a "${GITHUB_OUTPUT}"   
+    echo 'EOF'
+  } >>"${GITHUB_OUTPUT}"
+  # REPO_LIST="${REPO_LIST}${repository_type}-${repository_lifestage}=${repository_key}\n"
   
 done
 
-{
-  echo 'stdout<<EOF'
-  echo ${REPO_LIST} | tee -a "${GITHUB_OUTPUT}"  
-  echo 'EOF'
-} >>"${GITHUB_OUTPUT}"
+# {
+#   echo 'stdout<<EOF'
+#   echo ${REPO_LIST} | tee -a "${GITHUB_OUTPUT}"  
+#   echo 'EOF'
+# } >>"${GITHUB_OUTPUT}"
 
