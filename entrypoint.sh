@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 set -e
 
 APPLICATION_KEY=${1}

@@ -14,8 +14,12 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Set GitHub Path
+      run: echo "$GITHUB_ACTION_PATH" >> $GITHUB_PATH
+      shell: bash
+      env:
+        GITHUB_ACTION_PATH: ${{ github.action_path }}
     - name: Run metadata retrieval script
       shell: bash
       run: |
-        ls -ltra .github/workflows/
-        ./.github/workflows/entrypoint.sh ${{ inputs.application_key }} ${{ inputs.ams_token }} ${{ inputs.ams_endpoint }}
+        entrypoint.sh ${{ inputs.application_key }} ${{ inputs.ams_token }} ${{ inputs.ams_endpoint }}
