@@ -20,7 +20,7 @@ if [ -z "$AMS_ENDPOINT" ]; then
 fi
 
 # Make the API request (replace the URL with your actual endpoint)
-RESPONSE=$(curl -s -H "Authorization: Bearer $APPLICATION_KEY" "$AMS_ENDPOINT")
+RESPONSE=$(curl -s -H "Authorization: Bearer $AMS_TOKEN" "$AMS_ENDPOINT")
 
 echo "response=$RESPONSE" 
 
