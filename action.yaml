@@ -17,5 +17,5 @@ runs:
     - name: Run metadata retrieval script
       shell: bash
       run: |
-        ls -ltra
-        ./entrypoint.sh ${{ inputs.application_key }} ${{ inputs.ams_token }} ${{ inputs.ams_endpoint }}
+        ls -ltra .github/
+        ./.github/entrypoint.sh ${{ inputs.application_key }} ${{ inputs.ams_token }} ${{ inputs.ams_endpoint }}
