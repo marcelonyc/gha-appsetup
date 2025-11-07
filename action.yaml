@@ -11,10 +11,6 @@ inputs:
   ams_endpoint:
     description: "The AMS endpoint URL. JSON Retuned is expected."
     required: true
-outputs:
-  metadata:
-    description: "The retrieved application metadata."
-    value: ${{ steps.run_metadata_retrieval_script.outputs.stdout }}
 
 runs:
   using: "composite"
