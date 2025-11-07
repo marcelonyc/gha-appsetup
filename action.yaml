@@ -15,6 +15,9 @@ outputs:
   metadata:
     description: "The retrieved application metadata."
     value: ${{ steps.run_metadata_retrieval_script.outputs.stdout }}
+  repo_list:
+    description: "The list of repositories retrieved."
+    value: ${{ steps.run_metadata_retrieval_script.outputs.repo_list }}
 
 runs:
   using: "composite"

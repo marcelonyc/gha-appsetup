@@ -38,13 +38,15 @@ echo "$RESPONSE" | jq -c --arg app_key "$APPLICATION_KEY" '.[] | select(.applica
     # echo ${repository_type}-${repository_lifestage}=${repository_key} | tee -a "${GITHUB_OUTPUT}"   
   #   echo 'EOF'
   # } >>"${GITHUB_OUTPUT}"
-  REPO_LIST="${REPO_LIST}${repository_type}-${repository_lifestage}=${repository_key}\n"
+  # REPO_LIST="${REPO_LIST}${repository_type}-${repository_lifestage}=${repository_key}\n"
+  echo "${repository_type}-${repository_lifestage}=${repository_key}\n" >> /tmp/repo_output.txt
 done
 
+echo "repo_list=/tmp/repo_output.txt" >> "${GITHUB_OUTPUT}"
 
-{
-  echo 'stdout<<EOF'
-  echo $REPO_LIST
-  echo 'EOF'
-} >>"${GITHUB_OUTPUT}"
+# {
+#   echo 'stdout<<EOF'
+#   echo $REPO_LIST
+#   echo 'EOF'
+# } >>"${GITHUB_OUTPUT}"
 
