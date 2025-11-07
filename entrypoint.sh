@@ -42,7 +42,7 @@ done
 
 {
   echo 'stdout<<EOF'
-  ${REPO_LIST} | tee -a "${GITHUB_OUTPUT}"  
+  ${REPO_LIST}
   echo 'EOF'
 } >>"${GITHUB_OUTPUT}"
 
