@@ -39,6 +39,8 @@ echo "$RESPONSE" | jq -c --arg app_key "$APPLICATION_KEY" '.[] | select(.applica
   REPO_LIST="${REPO_LIST}${repository_type}-${repository_lifestage}=${repository_key}\n"
 done
 
+echo "REPO: $REPO_LIST"
+
 {
   echo 'stdout<<EOF'
   echo $REPO_LIST
