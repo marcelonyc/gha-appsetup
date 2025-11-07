@@ -1,3 +1,4 @@
+#! /bin/bash
 set -e
 
 APPLICATION_KEY=${1}
@@ -37,7 +38,7 @@ echo "$RESPONSE" | jq -c --arg app_key "$APPLICATION_KEY" '.[] | select(.applica
     # echo ${repository_type}-${repository_lifestage}=${repository_key} | tee -a "${GITHUB_OUTPUT}"   
   #   echo 'EOF'
   # } >>"${GITHUB_OUTPUT}"
-  REPO_LIST=$(echo "${REPO_LIST}${repository_type}-${repository_lifestage}=${repository_key}\n"|tee -a "${GITHUB_OUTPUT}")
+  REPO_LIST="${REPO_LIST}${repository_type}-${repository_lifestage}=${repository_key}\n"
 done
 
 
