@@ -22,7 +22,7 @@ fi
 # Make the API request (replace the URL with your actual endpoint)
 RESPONSE=$(curl -s -H "Authorization: Bearer $AMS_TOKEN" "$AMS_ENDPOINT")
 
-echo "response=$RESPONSE" 
+# echo "response=$RESPONSE" 
 
 # RESPONSE = [{"project_key":"dvr","project_name":"dvr","application_key":"dvr-rental","application_name":"DVR aRental","repository_key":"dvr-docker-local-all-stages","repository_name":"dvr-docker-local-all-stages","repository_type":"docker","repository_lifestage":"all"},
 # {"project_key":"dvr","project_name":"dvr","application_key":"dvr-rental","application_name":"DVR aRental","repository_key":"dvr-generic-local-all-stages","repository_name":"dvr-generic-local-all-stages","repository_type":"generic","repository_lifestage":"all"}]
@@ -31,5 +31,6 @@ echo "$RESPONSE" | jq -c --arg app_key "$APPLICATION_KEY" '.[] | select(.applica
   repository_type=$(echo "$record" | jq -r '.repository_type')
   repository_lifestage=$(echo "$record" | jq -r '.repository_lifestage')
   repository_key=$(echo "$record" | jq -r '.repository_key')
+  echo "${repository_type}-${repository_lifestage}=${repository_key}"
   echo "${repository_type}-${repository_lifestage}=${repository_key}" >> $GITHUB_OUTPUT
 done
