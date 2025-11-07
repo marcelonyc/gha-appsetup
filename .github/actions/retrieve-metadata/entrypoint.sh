@@ -23,9 +23,11 @@ fi
 # Make the API request (replace the URL with your actual endpoint)
 RESPONSE=$(curl -s -H "Authorization: Bearer $APPLICATION_KEY" "$AMS_ENDPOINT")
 
-# Parse the metadata (requires jq)
-PROJECT_KEY=$(echo "$RESPONSE" | jq -r '.project_key')
-REPOSITORIES=$(echo "$RESPONSE" | jq -c '.repositories')
+echo "response=$RESPONSE" >> "$GITHUB_OUTPUT"
+
+# # Parse the metadata (requires jq)
+# PROJECT_KEY=$(echo "$RESPONSE" | jq -r '.project_key')
+# REPOSITORIES=$(echo "$RESPONSE" | jq -c '.repositories')
 
 # echo "Project Key: $PROJECT_KEY"
 # echo "Repositories: $REPOSITORIES"
