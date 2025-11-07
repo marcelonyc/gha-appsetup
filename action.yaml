@@ -17,6 +17,4 @@ runs:
     - name: Run metadata retrieval script
       shell: bash
       run: |
-        ./entrypoint.sh ${{
-          inputs.application_key
-        }} ${{ inputs.ams_token }} ${{ inputs.ams_endpoint }}
+        ./entrypoint.sh ${{ inputs.application_key }} ${{ inputs.ams_token }} ${{ inputs.ams_endpoint }}
