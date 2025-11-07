@@ -42,7 +42,7 @@ done
 
 {
   echo 'stdout<<EOF'
-  ${REPO_LIST}
+  IS THIS TRUE?
   echo 'EOF'
 } >>"${GITHUB_OUTPUT}"
 
