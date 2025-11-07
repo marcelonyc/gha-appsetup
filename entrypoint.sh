@@ -32,5 +32,4 @@ echo "$RESPONSE" | jq -c --arg app_key "$APPLICATION_KEY" '.[] | select(.applica
   repository_lifestage=$(echo "$record" | jq -r '.repository_lifestage')
   repository_key=$(echo "$record" | jq -r '.repository_key')
   echo "${repository_type}-${repository_lifestage}=${repository_key}"
-  echo "${repository_type}-${repository_lifestage}=${repository_key}" >> $GITHUB_OUTPUT
 done
