@@ -1,0 +1,35 @@
+#! /bin/bash
+
+set -e
+
+source ~/appconfig/.env
+
+repository_type="$1"
+lifestage="$2" 
+
+if [ -z "$repo_type" ]; then
+  echo "Error: repo_type input is required." >&2
+  exit 1
+fi
+if [ -z "$stage" ]; then
+  echo "Error: stage input is required." >&2
+  exit 1
+fi
+
+RESPONSE=$(cat ${config_cache_file})
+
+repository_key=$(echo "$RESPONSE" | jq -r --arg repo_type "$repository_type" --arg stage "$lifestage" '
+    .[] | select((.repository_type == $repo_type and .repository_lifestage == $stage) or 
+                             (.repository_type == $repo_type and .repository_lifestage == "all")) | 
+    .repository_key')
+
+if [ -z "$repository_key" ]; then
+    echo "Error: No matching repository_key found." >&2
+    exit 1
+fi
+
+echo "$repository_key"
+
+
+
+
