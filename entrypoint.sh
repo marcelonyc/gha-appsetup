@@ -37,12 +37,11 @@ echo "$RESPONSE" | jq -c --arg app_key "$APPLICATION_KEY" '.[] | select(.applica
   #   echo 'EOF'
   # } >>"${GITHUB_OUTPUT}"
   REPO_LIST="${REPO_LIST}${repository_type}-${repository_lifestage}=${repository_key}\n"
-  
 done
 
 {
   echo 'stdout<<EOF'
-  echo "IS THIS TRUE"
+  echo $REPO_LIST
   echo 'EOF'
 } >>"${GITHUB_OUTPUT}"
 
