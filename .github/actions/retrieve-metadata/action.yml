@@ -1,9 +1,15 @@
 name: "Retrieve Application Metadata"
 description: "Retrieves application metadata from an API and outputs JFrog Artifactory attributes."
-author: "Your Name <your.email@example.com>"
+author: "Your Name marcelol@jfrog.com"
 inputs:
-  application_id:
-    description: "The Application ID for API authentication."
+  application_key:
+    description: "The Application Key for API authentication."
+    required: true
+  ams_token:
+    description: "The AMS token for API authentication."
+    required: true
+  ams_endpoint:
+    description: "The AMS endpoint URL. JSON Retuned is expected."
     required: true
 runs:
   using: "composite"
@@ -11,4 +17,6 @@ runs:
     - name: Run metadata retrieval script
       shell: bash
       run: |
-        ./.github/actions/retrieve-metadata/entrypoint.sh
+        ./.github/actions/retrieve-metadata/entrypoint.sh ${{
+          inputs.application_key
+        }} ${{ inputs.ams_token }} ${{ inputs.ams_endpoint }}

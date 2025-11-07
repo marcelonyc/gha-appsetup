@@ -1,0 +1,4 @@
+# PLACE this file in ~/.app-manager
+
+## Location of you Sqlite database file
+DB_PATH="/path/to/your/app-manager-database.db"
