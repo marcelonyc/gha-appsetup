@@ -42,7 +42,7 @@ done
 
 {
   echo 'stdout<<EOF'
-  IS THIS TRUE?
+  "IS THIS TRUE"
   echo 'EOF'
 } >>"${GITHUB_OUTPUT}"
 
