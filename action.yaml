@@ -11,6 +11,11 @@ inputs:
   ams_endpoint:
     description: "The AMS endpoint URL. JSON Retuned is expected."
     required: true
+outputs:
+  metadata:
+    description: "The retrieved application metadata."
+    value: ${{ steps.run_metadata_retrieval_script.outputs.stdout }}
+
 runs:
   using: "composite"
   steps:
@@ -20,6 +25,7 @@ runs:
       env:
         GITHUB_ACTION_PATH: ${{ github.action_path }}
     - name: Run metadata retrieval script
+      id: run_metadata_retrieval_script
       shell: bash
       run: |
-        entrypoint.sh ${{ inputs.application_key }} ${{ inputs.ams_token }} ${{ inputs.ams_endpoint }} >> $GITHUB_OUTPUT
+        entrypoint.sh ${{ inputs.application_key }} ${{ inputs.ams_token }} ${{ inputs.ams_endpoint }}
