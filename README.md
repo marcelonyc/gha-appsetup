@@ -55,6 +55,7 @@ jobs:
 
       - name: Setup JFrog CLI
         uses: jfrog/setup-jfrog-cli@v4
+        id: jf-cli
         env:
           JF_URL: ${{ vars.JF_URL }}
         with:
@@ -65,7 +66,7 @@ jobs:
         uses: your-org/gha-appsetup@v1
         with:
           application_key: "my-app-001"
-          ams_token: ${{ secrets.AMS_TOKEN }}
+          ams_token: ${{ secrets.AMS_TOKEN }} # If using a generic Jfrog repo this should be ${{ steps.jf-cli.outputs.oidc-token }}
           ams_endpoint: "https://your-ams-api.com/applications"
 
       - name: Get Docker Repository
