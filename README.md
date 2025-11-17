@@ -40,9 +40,19 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4
+        env:
+          JF_URL: ${{ vars.JF_URL }}
+        with:
+          oidc-provider-name: ${{ vars.JF_OIDC_PROVIDER_NAME }}
 
       - name: Retrieve Application Metadata
         id: app-metadata
@@ -55,22 +65,35 @@ jobs:
       - name: Get Docker Repository
         id: docker-repo
         run: |
-          DOCKER_REPO=$(appconfig docker DEV)
+          DOCKER_REPO=$(appconfig docker production)
           echo "repository=$DOCKER_REPO" >> $GITHUB_OUTPUT
 
       - name: Get Maven Repository  
         id: maven-repo
         run: |
-          MAVEN_REPO=$(appconfig maven DEV)
+          MAVEN_REPO=$(appconfig maven development)
           echo "repository=$MAVEN_REPO" >> $GITHUB_OUTPUT
 
-      - name: Build Docker Image
+      - name: Build and Push Docker Image
         run: |
-          docker build -t ${{ steps.docker-repo.outputs.repository }}/my-app:${{ github.sha }} .
+          # Build Docker image
+          jf docker build -t ${{ steps.docker-repo.outputs.repository }}/my-app:${{ github.sha }} .
+          # Push to JFrog Artifactory
+          jf docker push ${{ steps.docker-repo.outputs.repository }}/my-app:${{ github.sha }}
 
-      - name: Deploy Maven Artifacts
+      - name: Build and Deploy Maven Artifacts
         run: |
-          mvn deploy -DrepositoryUrl=${{ steps.maven-repo.outputs.repository }}
+          # Configure Maven to use JFrog repository
+          jf mvn-config --repo-resolve-releases ${{ steps.maven-repo.outputs.repository }} \
+                        --repo-resolve-snapshots ${{ steps.maven-repo.outputs.repository }} \
+                        --repo-deploy-releases ${{ steps.maven-repo.outputs.repository }} \
+                        --repo-deploy-snapshots ${{ steps.maven-repo.outputs.repository }}
+          # Build and deploy
+          jf mvn clean deploy
+
+      - name: Publish Build Info
+        run: |
+          jf rt build-publish
 ```
 
 ## Inputs
@@ -113,24 +136,44 @@ appconfig <repository_type> <lifestage>
   run: |
     REPO_KEY=$(appconfig docker production)
     echo "repository=$REPO_KEY" >> $GITHUB_OUTPUT
+
+- name: Build and Push Docker Image
+  run: |
+    jf docker build -t ${{ steps.docker-prod.outputs.repository }}/my-app:latest .
+    jf docker push ${{ steps.docker-prod.outputs.repository }}/my-app:latest
 ```
 
 #### Get Maven Repository for Development
 
 ```yaml
 - name: Get Development Maven Repository  
+  id: maven-dev
   run: |
     MAVEN_REPO=$(appconfig maven development)
-    echo "Maven repository: $MAVEN_REPO"
+    echo "repository=$MAVEN_REPO" >> $GITHUB_OUTPUT
+
+- name: Configure and Deploy Maven
+  run: |
+    jf mvn-config --repo-resolve-releases ${{ steps.maven-dev.outputs.repository }} \
+                  --repo-deploy-releases ${{ steps.maven-dev.outputs.repository }}
+    jf mvn clean deploy
 ```
 
 #### Get NPM Repository for Testing
 
 ```yaml
 - name: Get Testing NPM Repository
+  id: npm-test
   run: |
     NPM_REPO=$(appconfig npm testing)
-    npm config set registry $NPM_REPO
+    echo "repository=$NPM_REPO" >> $GITHUB_OUTPUT
+
+- name: Configure and Publish NPM Package
+  run: |
+    jf npm-config --repo-resolve ${{ steps.npm-test.outputs.repository }} \
+                  --repo-deploy ${{ steps.npm-test.outputs.repository }}
+    jf npm install
+    jf npm publish
 ```
 
 #### Get Generic Repository (All Stages)
@@ -187,6 +230,36 @@ Add the following secrets to your GitHub repository:
 
 - `AMS_TOKEN`: Authentication token for your AMS API endpoint
 
+### Variables Configuration
+
+Add the following variables to your GitHub repository:
+
+- `JF_URL`: Your JFrog Platform URL (e.g., `https://mycompany.jfrog.io`)
+- `JF_OIDC_PROVIDER_NAME`: The OIDC provider name configured in JFrog Platform
+- `AMS_ENDPOINT`: Your AMS API endpoint URL
+
+### JFrog OIDC Configuration
+
+Before using this action, you must configure OIDC integration in your JFrog Platform:
+
+1. **Create OIDC Integration**: In JFrog Platform, go to Administration → Identity and Access → OIDC Integrations
+2. **Configure GitHub OIDC Provider**: 
+   - Provider Type: `Custom`
+   - Provider URL: `https://token.actions.githubusercontent.com`
+   - Audience: `jfrog-github`
+3. **Create Identity Mapping**: Map GitHub repository to JFrog users/groups based on claims
+4. **Set Permissions**: Ensure the mapped identity has appropriate permissions for your repositories
+
+### Workflow Permissions
+
+Ensure your workflow has the required permissions:
+
+```yaml
+permissions:
+  id-token: write  # Required for OIDC authentication
+  contents: read   # Required for repository access
+```
+
 ### AMS API Endpoint
 
 Your AMS endpoint should:
@@ -208,28 +281,44 @@ The action will fail with clear error messages if:
 ### Using with Matrix Builds
 
 ```yaml
-strategy:
-  matrix:
-    environment: [development, testing, production]
-    
-steps:
-  - name: Retrieve Application Metadata
-    uses: your-org/gha-appsetup@v1
-    with:
-      application_key: "my-app-001"
-      ams_token: ${{ secrets.AMS_TOKEN }}
-      ams_endpoint: ${{ vars.AMS_ENDPOINT }}
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    strategy:
+      matrix:
+        environment: [development, testing, production]
+        
+    steps:
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4
+        env:
+          JF_URL: ${{ vars.JF_URL }}
+        with:
+          oidc-provider-name: ${{ vars.JF_OIDC_PROVIDER_NAME }}
 
-  - name: Get Repository for Environment
-    run: |
-      REPO=$(appconfig docker ${{ matrix.environment }})
-      echo "Deploying to: $REPO"
+      - name: Retrieve Application Metadata
+        uses: your-org/gha-appsetup@v1
+        with:
+          application_key: "my-app-001"
+          ams_token: ${{ secrets.AMS_TOKEN }}
+          ams_endpoint: ${{ vars.AMS_ENDPOINT }}
+
+      - name: Deploy to Environment
+        run: |
+          REPO=$(appconfig docker ${{ matrix.environment }})
+          jf docker build -t $REPO/my-app:${{ github.sha }} .
+          jf docker push $REPO/my-app:${{ github.sha }}
+          echo "Deployed to: $REPO"
 ```
 
 ### Conditional Repository Selection
 
 ```yaml
 - name: Select Repository Based on Branch
+  id: repo-selection
   run: |
     if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
       REPO=$(appconfig docker production)
@@ -237,6 +326,11 @@ steps:
       REPO=$(appconfig docker development)
     fi
     echo "repository=$REPO" >> $GITHUB_OUTPUT
+
+- name: Build and Push to Selected Repository
+  run: |
+    jf docker build -t ${{ steps.repo-selection.outputs.repository }}/my-app:${{ github.sha }} .
+    jf docker push ${{ steps.repo-selection.outputs.repository }}/my-app:${{ github.sha }}
 ```
 
 ## Contributing
