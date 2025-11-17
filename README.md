@@ -16,6 +16,12 @@ The data source returns JSON containing application metadata including:
 - Repository keys, names, types, and lifecycle stages
 - Application keys and names
 
+For detailed information about the database schema, setup instructions, and example implementations, see the [app-data-source](./app-data-source/) folder which contains:
+- Database schema definitions and required fields
+- Sample SQL queries for data retrieval
+- JSON output format examples
+- Setup and configuration guidance
+
 ## Usage
 
 ### Basic Usage
