@@ -22,6 +22,27 @@ For detailed information about the database schema, setup instructions, and exam
 - JSON output format examples
 - Setup and configuration guidance
 
+### Using with Backstage or Other Application Management Tools
+
+If you're using **Backstage**, **Port**, **OpsLevel**, or any other application management platform, you can easily adapt this action to work with your existing system:
+
+1. **Clone and Fork**: Fork this repository to create your own version
+2. **Modify the API Integration**: Update the `entrypoint.sh` script to call your platform's API instead of the default AMS endpoint
+3. **Adapt Data Mapping**: Modify the JSON parsing logic to map your platform's data structure to the expected format
+4. **Customize Authentication**: Update the authentication mechanism to work with your platform (API keys, OAuth, etc.)
+
+**Example for Backstage Integration:**
+- Use the Backstage Software Catalog API to retrieve component metadata
+- Map Backstage component annotations to JFrog repository information
+- Leverage existing Backstage entity relationships and metadata
+
+**Example for Port Integration:**
+- Query Port's API using entity blueprints and properties
+- Map Port entity properties to repository configurations
+- Use Port's relationship system to link applications to their repositories
+
+This approach allows you to maintain the same workflow patterns while integrating with your organization's existing application management infrastructure.
+
 ## Usage
 
 ### Basic Usage
