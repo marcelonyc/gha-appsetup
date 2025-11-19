@@ -1,9 +1,12 @@
 #! /bin/bash
 set -e
 
-ls -ltr
+
 
 mkdir -p ~/appconfig
+touch ~/appconfig/.env
+ls -ltr
+
 cp .env ~/appconfig/.env
 
 source ~/appconfig/.env
