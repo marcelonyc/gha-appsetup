@@ -3,13 +3,7 @@ set -e
 
 
 
-mkdir -p ~/appconfig
-touch ~/appconfig/.env
-ls -ltr
-
-cp .env ~/appconfig/.env
-
-source ~/appconfig/.env
+config_cache_file="/tmp/appconfig_cache.txt"
 
 APPLICATION_KEY=${1}
 AMS_TOKEN=${2}
