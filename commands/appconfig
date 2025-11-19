@@ -4,7 +4,7 @@ set -e
 
 source ~/appconfig/.env
 
-repository_type="$1"
+repo_type="$1"
 lifestage="$2" 
 
 if [ -z "$repo_type" ]; then
@@ -18,7 +18,7 @@ fi
 
 RESPONSE=$(cat ${config_cache_file})
 
-repository_key=$(echo "$RESPONSE" | jq -r --arg repo_type "$repository_type" --arg stage "$lifestage" '
+repository_key=$(echo "$RESPONSE" | jq -r --arg repo_type "$repo_type" --arg stage "$lifestage" '
     .[] | select((.repository_type == $repo_type and .repository_lifestage == $stage) or 
                              (.repository_type == $repo_type and .repository_lifestage == "all")) | 
     .repository_key')
