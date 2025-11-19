@@ -29,7 +29,7 @@ RESPONSE=$(curl -s -H "Authorization: Bearer $AMS_TOKEN" "$AMS_ENDPOINT")
 # RESPONSE = '[{"project_key":"dvr","project_name":"dvr","application_key":"dvr-rental","application_name":"DVR aRental","repository_key":"dvr-docker-local-all-stages","repository_name":"dvr-docker-local-all-stages","repository_type":"docker","repository_lifestage":"all"},
 # {"project_key":"dvr","project_name":"dvr","application_key":"dvr-rental","application_name":"DVR aRental","repository_key":"dvr-generic-local-all-stages","repository_name":"dvr-generic-local-all-stages","repository_type":"generic","repository_lifestage":"all"}]'
 
-cp commands/appconfig /usr/local/bin/appconfig
+cp ${GITHUB_ACTION_PATH}/commands/appconfig /usr/local/bin/appconfig
 if [ $? -ne 0 ]; then
   echo "Error: Failed to copy appconfig command to /usr/local/bin." >&2
   exit 1

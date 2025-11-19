@@ -22,21 +22,22 @@ outputs:
 runs:
   using: "composite"
   steps:
-    # - name: Set GitHub Path
-    #   run: echo "$GITHUB_ACTION_PATH" >> $GITHUB_PATH
-    #   shell: bash
-    #   env:
-    #     GITHUB_ACTION_PATH: ${{ github.action_path }}
-
-    - name: Check out repository
-      uses: actions/checkout@v4
-
-    - name: List files for debugging
-      run: ls -ltrR
+    - name: Set GitHub Path
+      id: set_github_path
+      run: |
+        echo "$GITHUB_ACTION_PATH" >> $GITHUB_PATH
+        echo "action_path=$GITHUB_ACTION_PATH" >> $GITHUB_OUTPUT
       shell: bash
+      env:
+        GITHUB_ACTION_PATH: ${{ github.action_path }}
+
+    # - name: Check out repository
+    #   uses: actions/checkout@v4
 
     - name: Run metadata retrieval script
       id: run_metadata_retrieval_script
       shell: bash
       run: |
         entrypoint.sh ${{ inputs.application_key }} ${{ inputs.ams_token }} ${{ inputs.ams_endpoint }}
+      env:
+        GITHUB_ACTION_PATH: ${{ steps.set_github_path.outputs.action_path }}
