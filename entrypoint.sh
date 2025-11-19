@@ -1,7 +1,6 @@
 #! /bin/bash
 set -e
 
-ls -ltrR
 
 config_cache_file="/tmp/appconfig_cache.txt"
 

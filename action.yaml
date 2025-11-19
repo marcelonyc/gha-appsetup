@@ -27,8 +27,13 @@ runs:
       shell: bash
       env:
         GITHUB_ACTION_PATH: ${{ github.action_path }}
+
     - name: Check out repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
+
+    - name: List files for debugging
+      run: ls -ltrR
+      shell: bash
 
     - name: Run metadata retrieval script
       id: run_metadata_retrieval_script
