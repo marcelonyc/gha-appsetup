@@ -3,6 +3,7 @@ set -e
 
 
 source ${GITHUB_ACTION_PATH}/.env
+mkdir -p ~/appconfig
 cp ${GITHUB_ACTION_PATH}/.env ~/appconfig/.env
 
 APPLICATION_KEY=${1}
