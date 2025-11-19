@@ -2,7 +2,8 @@
 set -e
 
 
-config_cache_file="/tmp/appconfig_cache.txt"
+source ${GITHUB_ACTION_PATH}/.env
+cp ${GITHUB_ACTION_PATH}/.env ~/appconfig/.env
 
 APPLICATION_KEY=${1}
 AMS_TOKEN=${2}
