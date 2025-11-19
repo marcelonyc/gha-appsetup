@@ -11,15 +11,15 @@ if [ -z "$repo_type" ]; then
   echo "Error: repo_type input is required." >&2
   exit 1
 fi
-if [ -z "$stage" ]; then
-  echo "Error: stage input is required." >&2
+if [ -z "$lifestage" ]; then
+  echo "Error: lifestage input is required." >&2
   exit 1
 fi
 
 RESPONSE=$(cat ${config_cache_file})
 
-repository_key=$(echo "$RESPONSE" | jq -r --arg repo_type "$repo_type" --arg stage "$lifestage" '
-    .[] | select((.repository_type == $repo_type and .repository_lifestage == $stage) or 
+repository_key=$(echo "$RESPONSE" | jq -r --arg repo_type "$repo_type" --arg lifestage "$lifestage" '
+    .[] | select((.repository_type == $repo_type and .repository_lifestage == $lifestage) or 
                              (.repository_type == $repo_type and .repository_lifestage == "all")) | 
     .repository_key')
 
